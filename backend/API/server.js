@@ -2,17 +2,8 @@ const express = require('express');
 const app = express();
 const request = require('request');
 const mongoose = require('mongoose');
-
+const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://deval:deval@cluster0.odhin.mongodb.net/ipl_fantasy>?retryWrites=true&w=majority";
-mongoose.set('debug', true);
-mongoose.connect('mongodb://localhost:27017/researchImpact2', { useNewUrlParser: true })
-    .then(() => {
-        console.log("connected to database!");
-    })
-    .catch((error) => {
-        console.log("connection to database failed!");
-        console.log(error);
-    });
 
 app.use((request, response, next) => {
     response.setHeader("Access-Control-Allow-Origin", "*");
@@ -22,41 +13,30 @@ app.use((request, response, next) => {
 });
 
 app.get('/test', (req, res) => {
-    res.send({ "success": "true" });
+    res.send({ "Success": "true" });
 });
-// app.get('/locatestion', (req, res) => {
-//     let street = encodeURI(req.query.street);
-//     let state = encodeURI(req.query.state);
-//     let city = encodeURI(req.query.city);
-//     let url = `https://maps.googleapis.com/maps/api/geocode/json?address=[${street},${city},${state}]&key=${GOOGLE_API_KEY}`;
-//     callAPI(url, (responseData) => {
 
-//         if (responseData['results'] == "error") {
-//             res.status(500).send();
-//         } else {
-//             responseData['results'][0]['geometry']['location']['stateAbbreviation'] = responseData['results'][0]['address_components'][5]['short_name'];
-//             res.send(responseData['results'][0]['geometry']['location']);
-//         }
-//     });
-//     // res.send({"lat":34.03165,"lng":-118.285245,"stateAbbreviation":"CA"});
-// });
+app.get('/get-all-stats', async (req, res) => {
+    let player_stats = {}
 
-
-function callAPI(url, callback) {
-    let result;
-    request(url, function (error, response) {
-        if (error) {
-            callback({ "results": "error" })
-        } else {
-            try {
-                result = JSON.parse(response.body);
-                callback(result);
-            } catch (err) {
-                callback({ "results": "error" });
-            }
+    try {
+        const stats = await getAllStats();
+        while (await stats.hasNext()) {
+            const player = await stats.next();
+            player_stats[player["name"]] = player["match_stats"];
         }
-    });
+        res.send({ "stats": player_stats });
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+async function getAllStats() {
+    const db = await MongoClient.connect(uri);
+    const dbo = db.db("ipl_fantasy");
+    const all_player_stats = await dbo.collection("scores").find({})
+    return all_player_stats
 }
+
 let port = process.env.PORT || 8081;
-// let port = 8081;
 app.listen(port, () => console.log('app listening on port 8081'));
