@@ -5,7 +5,7 @@ import {
 import './Components.css';
 import PointsTable from './PointsTable';
 import FixtureTable from './FixtureTable';
-const Login = props => {
+const Home = props => {
 
     return (
         <div>
@@ -23,4 +23,4 @@ const Login = props => {
     );
 }
 
-export default Login;
+export default Home;
