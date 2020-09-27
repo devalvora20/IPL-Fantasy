@@ -82,11 +82,11 @@ scores = db.scores
 #         {"$set": {"total_points": 0}}
 #     )
 
-# for player in PLAYERS:
-#     scores.update_one(
-#         {"name": player},
-#         {"$set": {"match_stats": []}}
-#     )
+for player in PLAYERS:
+    scores.update_one(
+        {"name": player},
+        {"$set": {"match_stats": [], "total_points": 0}}
+    )
 
 
 batsman = True
@@ -110,7 +110,7 @@ def insert_match_data(dict1):
         total_points = player_data["total_points"]
         total_points += value["total_match_points"]
         stats = player_data["match_stats"]
-        stats.append({match_info: value})
+        stats.append({"match": match_info, "match_stats": value})
 
         print(scores.update_one(
             {"name": key},

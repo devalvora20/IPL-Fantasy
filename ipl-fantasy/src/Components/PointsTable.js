@@ -1,168 +1,181 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
-import Collapse from '@material-ui/core/Collapse';
-import IconButton from '@material-ui/core/IconButton';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import { Accordion, AccordionSummary, AccordionDetails } from '@material-ui/core';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import {
+    Grid, Table, Button, TableBody, TableCell, TableContainer, TableHead, TableRow, Divider,
+    Accordion, AccordionSummary, Typography, AccordionDetails, Chip, Paper
+} from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { Controller } from '../Controller/Controller';
+import PersonIcon from '@material-ui/icons/Person';
 
-const useRowStyles = makeStyles({
-    root: {
-        '& > *': {
-            borderBottom: 'unset',
-        },
-    },
-    heading: {
-        fontSize: 15,
-        flexBasis: '33.33%',
-        flexShrink: 0,
-    },
-    secondaryHeading: {
-        fontSize: 15,
-        color: "#6d6d6d",
+const useStyles = makeStyles({
+    table: {
+        minWidth: 650,
     },
 });
 
-function createData(name, totalPoints) {
-    let t = {
-        name,
-        totalPoints,
-        history: [
-            { date: '2020-01-05', customerId: '11091700', amount: 3 },
-            { date: '2020-01-02', customerId: 'Anonymous', amount: 1 },
-        ],
-    };
-    console.log(t)
-    return t; 
-}
+const ABHISHEK_TEAM = ["de Villiers", "Suryakumar Yadav", "Gayle", "Ben Stokes", "Glenn Maxwell", "Jasprit Bumrah", "Umesh Yadav", "Sandeep Sharma"];
+const ARNAV_TEAM = ["Buttler", "Eoin Morgan", "Pant", "Andre Russell", "Vijay Shankar", "Yuzvendra Chahal", "Khalil Ahmed", "Jaydev Unadkat"];
+const DEVAL_TEAM = ["Lokesh Rahul", "Shreyas Iyer", "Jonny Bairstow", "Hardik Pandya", "Shreyas Gopal", "Sunil Narine", "D Chahar", "Imran Tahir"];
+const DHAWAN_TEAM = ["Rohit", "Dhawan", "Bravo", "Jofra Archer", "Kagiso Rabada", "Kuldeep Yadav", "Dale Steyn", "Ambati Rayudu"];
+const CHINTAN_TEAM = ["Steven Smith", "Finch", "Prithvi Shaw", "Pollard", "Krunal Pandya", "Mujeeb", "Shami", "Pat Cummins"];
+const MOHIL_TEAM = ["Kohli", "de Kock", "Manish Pandey", "Ravindra Jadeja", "Kedar Jadhav", "Bhuvneshwar", "Navdeep Saini", "Ishant Sharma"];
+const RISHAB_TEAM = ["David Warner", "Samson", "MS Dhoni", "Shane Watson", "Moeen Ali", "Rashid Khan", "Rahul Chahar", "Prasidh"];
 
-function Row(props) {
-    const { row } = props;
-    const [open, setOpen] = React.useState(false);
-    const [expanded, setExpanded] = React.useState(false);
-    const [devalSummary, setDevalSummary] = React.useState([]);
-
-    const handleChange = (panel) => (event, isExpanded) => {
-        setExpanded(isExpanded ? panel : false);
-    };
-    const handleRowClick = (event) => {
-        setOpen(!open);
-        console.log(event);
-    }
-    const classes = useRowStyles();
-
-    return (
-        <React.Fragment>
-            <TableRow className={classes.root}>
-                <TableCell>
-                    <IconButton aria-label="expand row" size="small" onClick={()=>{handleRowClick(row.name)}}>
-                        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                    </IconButton>
-                </TableCell>
-                <TableCell component="th" scope="row">
-                    {row.name}
-                </TableCell>
-                <TableCell align="right">{row.totalPoints}</TableCell>
-            </TableRow>
-            <TableRow>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                <Typography className={classes.heading}>Andre russel</Typography>
-                                <Typography className={classes.secondaryHeading}>1234</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <Box margin={1}>
-                                    <Table size="small" aria-label="purchases">
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell>Date</TableCell>
-                                                <TableCell>Customer</TableCell>
-                                                <TableCell align="right">Amount</TableCell>
-                                                <TableCell align="right">Total price ($)</TableCell>
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                            {row.players.map((player) => (
-                                                <TableRow key={player.name}>
-                                                    <TableCell component="th" scope="row">
-                                                        {player.name}
-                                                    </TableCell>
-                                                    <TableCell>{player.name}</TableCell>
-                                                    <TableCell align="right">{player.name}</TableCell>
-                                                    <TableCell align="right">
-                                                        
-                                                    </TableCell>
-                                                </TableRow>
-                                            ))}
-                                        </TableBody>
-                                    </Table>
-                                </Box>
-
-                            </AccordionDetails>
-                        </Accordion>
-                    </Collapse>
-                </TableCell>
-            </TableRow>
-        </React.Fragment>
-    );
-}
-
-
-// const rows = [
-//     createData('Abhishek', 159),
-//     // createData('Arnav', 237),
-//     // createData('Deval', 262),
-//     // createData('Dhawan', 305),
-//     // createData('Chintan', 356),
-//     // createData('Mohil', 356),
-//     // createData('Rishab', 356),
-// ];
-
-export default function PointsTable() {
-    const [rows, setRows] = React.useState([]);
-    const [controller, setController] = React.useState();
-    // let controller;
-    useEffect(()=>{
-        setController(new Controller());
-        console.log("once");
-    }, [])
-    setTimeout(function () {
-        // setRows(controller.getAllData());
-        if(controller){
-            setRows(controller.getAllData());
+const getTeam = (name) => {
+    console.log(name);
+    let players = [];
+    if (name === "Abhishek") {
+        for (let player1 of ABHISHEK_TEAM) {
+            players.push(<Chip style={{ marginRight: 8 }} variant="outlined" label={player1} icon={<PersonIcon />} />)
         }
-    }, 3000)
+    }
+    else if (name === "Arnav") {
+        for (let player1 of ARNAV_TEAM) {
+            players.push(<Chip style={{ marginRight: 8 }} variant="outlined" label={player1} icon={<PersonIcon />} />)
+        }
+    }
+    else if (name === "Deval") {
+        for (let player1 of DEVAL_TEAM) {
+            players.push(<Chip style={{ marginRight: 8 }} variant="outlined" label={player1} icon={<PersonIcon />} />)
+        }
+    }
+    else if (name === "Chintan") {
+        for (let player1 of CHINTAN_TEAM) {
+            players.push(<Chip style={{ marginRight: 8 }} variant="outlined" label={player1} icon={<PersonIcon />} />)
+        }
+    }
+    else if (name === "Dhawan") {
+        for (let player1 of DHAWAN_TEAM) {
+            players.push(<Chip style={{ marginRight: 8 }} variant="outlined" label={player1} icon={<PersonIcon />} />)
+        }
+    }
+    else if (name === "Rishab") {
+        for (let player1 of RISHAB_TEAM) {
+            players.push(<Chip style={{ marginRight: 8 }} variant="outlined" label={player1} icon={<PersonIcon />} />)
+        }
+    }
+    else if (name === "Mohil") {
+        for (let player1 of MOHIL_TEAM) {
+            players.push(<Chip style={{ marginRight: 8 }} variant="outlined" label={player1} icon={<PersonIcon />} />)
+        }
+    }
+    return players;
+}
+
+const PointsTable = () => {
+
+    const [rows, setRows] = useState([]);
+    const [showStats, setShowStats] = useState(false);
+    const [detailedTeam, setDetailedTeam] = useState([]);
+
+    const classes = useStyles();
+    let controller;
+    useEffect(() => {
+        controller = new Controller();
+    }, []);
+    setTimeout(() => {
+        if (controller) {
+            let d = controller.getAllData();
+            console.log(d);
+            setRows(d);
+        }
+    }, 3000);
+
+    const showDetailedStats = (playerStats) => {
+        setShowStats(true);
+        setDetailedTeam(playerStats);
+    }
 
     return (
-        <TableContainer component={Paper}>
-            <Table aria-label="collapsible table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell />
-                        <TableCell>Player</TableCell>
-                        <TableCell align="right">Points</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {rows.map((row) => (
-                        <Row key={row.name} row={row} />
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <div>
+            <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    <TableContainer component={Paper}>
+                        <Table className={classes.table} >
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Player</TableCell>
+                                    <TableCell>Team</TableCell>
+                                    <TableCell>Points</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {rows.map((row) => (
+                                    <TableRow key={row.name}>
+                                        <TableCell component="th" scope="row">
+                                            <Button variant="outlined" color="primary" onClick={() => { showDetailedStats(row) }}>
+                                                {row.name}
+                                            </Button>
+                                        </TableCell>
+                                        <TableCell align="left">{getTeam(row.name)}</TableCell>
+                                        <TableCell align="left">{row.totalPoints}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Grid>
+                <Divider orientation="horizontal" style={{ height: 3, color: "black" }} />
+                <Grid item xs={12}>
+                    {showStats &&
+                        <Paper>
+                            <div>
+                                <h3>{detailedTeam["name"]}'s Team</h3>
+                            </div>
+                            {detailedTeam["players"].map((player, i) => {
+                                return (
+                                    <Accordion>
+                                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                            <Typography className={classes.heading}>{player["name"]}</Typography>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <TableContainer component={Paper}>
+                                                <Table className={classes.table} aria-label="simple table">
+                                                    <TableHead>
+                                                        <TableRow>
+                                                            <TableCell>Index</TableCell>
+                                                            <TableCell>Match</TableCell>
+                                                            <TableCell align="right">Runs</TableCell>
+                                                            <TableCell align="right">Fours</TableCell>
+                                                            <TableCell align="right">Sixs</TableCell>
+                                                            <TableCell align="right">Strike Rate</TableCell>
+                                                            <TableCell align="right">Wicket</TableCell>
+                                                            <TableCell align="right">Maiden</TableCell>
+                                                            <TableCell align="right">Economy</TableCell>
+                                                            <TableCell align="right">Total Points</TableCell>
+                                                        </TableRow>
+                                                    </TableHead>
+                                                    <TableBody>
+                                                        {player["stats"].map((player, i) => (
+                                                            <TableRow key={player.match}>
+                                                                <TableCell component="th" scope="row">{i + 1}</TableCell>
+                                                                <TableCell component="th" scope="row">{player.match}</TableCell>
+                                                                <TableCell align="right">{player.match_stats.runs | 0}</TableCell>
+                                                                <TableCell align="right">{player.match_stats.fours | 0}</TableCell>
+                                                                <TableCell align="right">{player.match_stats.sixs | 0}</TableCell>
+                                                                <TableCell align="right">{player.match_stats.sr | 0}</TableCell>
+                                                                <TableCell align="right">{player.match_stats.wicket | 0}</TableCell>
+                                                                <TableCell align="right">{player.match_stats.maiden | 0}</TableCell>
+                                                                <TableCell align="right">{player.match_stats.economy | 0}</TableCell>
+                                                                <TableCell align="right">{player.match_stats.total_match_points | 0}</TableCell>
+                                                            </TableRow>
+                                                        ))}
+                                                    </TableBody>
+                                                </Table>
+                                            </TableContainer>
+                                        </AccordionDetails>
+                                    </Accordion>
+                                )
+                            })}
+                        </Paper>
+                    }
+                </Grid>
+            </Grid>
+        </div>
     );
 }
+
+
+export default PointsTable;
