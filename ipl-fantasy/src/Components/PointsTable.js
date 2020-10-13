@@ -120,9 +120,9 @@ const PointsTable = () => {
                 <Divider orientation="horizontal" style={{ height: 3, color: "black" }} />
                 <Grid item xs={12}>
                     {showStats &&
-                        <Paper>
+                        <Paper style={{padding:10}}>
                             <div>
-                                <h3>{detailedTeam["name"]}'s Team</h3>
+                                <Typography >{detailedTeam["name"]}'s Team</Typography>
                             </div>
                             {detailedTeam["players"].map((player, i) => {
                                 return (
