@@ -5,3 +5,11 @@
 .divPadding {
     padding: 18px;
 }
+
+.MuiAccordionSummary-expandIcon{
+    color: white !important;
+}
+
+.viceCaptainChip {
+    border: 3px solid green !important;
+}

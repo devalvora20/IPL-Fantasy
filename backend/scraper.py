@@ -16,23 +16,26 @@ PLAYERS = ["Kohli", "Rohit", "David Warner", "de Villiers", "Buttler", "Steven S
            "Bhuvneshwar", "Finch", "Dhawan", "Shreyas Iyer", "Eoin Morgan", "Manish Pandey", "Samson", "Gayle", "Vijay Shankar", "Pollard",
            "Ben Stokes", "Shreyas Gopal", "Kedar Jadhav", "Jofra Archer", "Moeen Ali", "Kuldeep Yadav", "D Chahar", "Umesh Yadav", "Shami", "Rahul Chahar",
            "Khaleel Ahmed", "Suryakumar Yadav", "Prithvi Shaw", "Ambati Rayudu", "de Kock", "Jonny Bairstow", "Pant", "MS Dhoni", "Pat Cummins", "Sandeep Sharma", "Jaydev Unadkat", "Prasidh",
-           "Imran Tahir", "Navdeep Saini", "Dale Steyn", "Ishant Sharma","Boult","Anrich Nortje"]
+           "Imran Tahir", "Navdeep Saini", "Dale Steyn", "Ishant Sharma", "Boult", "Anrich Nortje", "Sam Curran"]
 
 BOWLERS = ["Rashid Khan", "Jasprit Bumrah", "Sunil Narine", "Yuzvendra Chahal", "Mujeeb", "Kagiso Rabada",
            "Bhuvneshwar", "Kuldeep Yadav", "D Chahar", "Umesh Yadav", "Shami", "Rahul Chahar",
            "Khaleel Ahmed", "Pat Cummins", "Sandeep Sharma", "Jaydev Unadkat", "Prasidh",
-           "Imran Tahir", "Navdeep Saini", "Dale Steyn", "Ishant Sharma","Boult","Anrich Nortje"]
+           "Imran Tahir", "Navdeep Saini", "Dale Steyn", "Ishant Sharma", "Boult", "Anrich Nortje"]
 
-OWNERS = ["abhishek","arnav","deval","dhawan","chintan","rishab","mohil"] 
+OWNERS = ["abhishek", "arnav", "deval", "dhawan", "chintan", "rishab", "mohil"]
 
 CAPTAINS = ["Kohli", "Rohit", "Rashid Khan", "de Villiers",
             "Buttler", "Finch", "Lokesh Rahul"]
+PLAYOFFS_CAPTAINS = ["David Warner", "Rohit",
+                     "Shreyas Iyer", "Jasprit Bumrah", "Pollard", "de Kock"]
 
 PLAYER_NAME_DICT = {
-    "Rayudu":"Ambati Rayudu",
-    "DJ Bravo":"Bravo",
-    "Dwayne Bravo":"Bravo",
-    "Bhuvneshwar Kumar":"Bhuvneshwar",
+    "Rayudu": "Ambati Rayudu",
+    "Chris Gayle": "Gayle",
+    "DJ Bravo": "Bravo",
+    "Dwayne Bravo": "Bravo",
+    "Bhuvneshwar Kumar": "Bhuvneshwar",
     "Unadkat": "Jaydev Unadkat",
     "K Khaleel Ahmed": "Khaleel Ahmed",
     "Watson": "Shane Watson",
@@ -71,12 +74,13 @@ PLAYER_NAME_DICT = {
     "Sanju Samson": "Samson",
     "Rohit Sharma": "Rohit",
     "Jos Buttler": "Buttler",
-    "Trent Boult":"Boult",
-    "Prasidh Krishna":"Prasidh",
-    "Nortje":"Anrich Nortje",
+    "Trent Boult": "Boult",
+    "Prasidh Krishna": "Prasidh",
+    "Nortje": "Anrich Nortje",
 }
 
 match_number = 0
+
 
 def get_week_from_match(match):
     if 1 <= match <= 7:
@@ -93,6 +97,8 @@ def get_week_from_match(match):
         return 6
     elif 51 <= match <= 56:
         return 7
+    else:
+        return 8
 
 
 TOTAL_PREFIX = "total_points_"
@@ -112,13 +118,13 @@ ECONOMY_KEY = "economy"
 reverse_vice_captain_dict = {}
 vice_captain_points = {}
 prev_gw_of_owner = {
-    "abhishek":1,
-    "arnav":1,
-    "deval":1,
-    "dhawan":1,
-    "chintan":1,
-    "rishab":1,
-    "mohil":1,
+    "abhishek": 1,
+    "arnav": 1,
+    "deval": 1,
+    "dhawan": 1,
+    "chintan": 1,
+    "rishab": 1,
+    "mohil": 1,
 }
 
 if(not test):
@@ -134,6 +140,8 @@ if(not test):
 # for player in PLAYERS:
 #     test = {"name":player,"match_stats": [], "total_points": 0, "total_batting_points": 0, "total_bowling_points": 0, "total_fielding_points": 0 }
 #     print(scores.insert_one(test))
+
+
 if(not test):
     for player in PLAYERS:
         print(scores.update_one(
@@ -143,10 +151,9 @@ if(not test):
         )
     for owner in OWNERS:
         print(players.update_one(
-            {"name":owner},
-            {"$set":{"vc_points_per_match":[]}}
+            {"name": owner},
+            {"$set": {"vc_points_per_match": []}}
         ))
-    
 
 
 batsman = True
@@ -168,17 +175,21 @@ def insert_match_data(dict1, current_gw):
     print("..")
     if(not test):
         current_gw_vcs = []
-        current_gw_vc_cursor = players.find({}, {"vc": 1,"name":1,"vc_points_per_match":1})
+        current_gw_vc_cursor = players.find(
+            {}, {"vc": 1, "name": 1, "vc_points_per_match": 1})
         for vcs in current_gw_vc_cursor:
             if str(current_gw) in vcs["vc"]:
-                reverse_vice_captain_dict[vcs["vc"][str(current_gw)]] = vcs["name"] 
+                reverse_vice_captain_dict[vcs["vc"]
+                                          [str(current_gw)]] = vcs["name"]
                 vice_captain_points[vcs["name"]] = vcs["vc_points_per_match"]
                 current_gw_vcs.append(vcs["vc"][str(current_gw)])
 
         for player_name, value in dict1.items():
-            if(player_name=="Boult" and match_number<20):
+            if(player_name == "Boult" and match_number < 20):
                 continue
-            elif(player_name=="Anrich Nortje" and match_number<28):
+            elif(player_name == "Sam Curran" and match_number < 39):
+                continue
+            elif(player_name == "Anrich Nortje" and match_number < 28):
                 continue
             player_data = scores.find_one({"name": player_name})
             total_points = player_data["total_points"]
@@ -189,27 +200,30 @@ def insert_match_data(dict1, current_gw):
             # To calculate vc points
             if player_name in current_gw_vcs:
                 owner_name1 = reverse_vice_captain_dict[player_name]
-                value["total_match_points"] = math.ceil(value["total_match_points"] * 1.5)
+                value["total_match_points"] = math.ceil(
+                    value["total_match_points"] * 1.5)
                 # for line chart vc array
                 length = len(vice_captain_points[owner_name1])
-                if( prev_gw_of_owner[owner_name1]!= current_gw and length!=3*(current_gw-1)):
-                    for i in range(length,3*(current_gw-1)):
-                        points_of_prev_match = 0                        
+                if(prev_gw_of_owner[owner_name1] != current_gw and length != 3*(current_gw-1)):
+                    for i in range(length, 3*(current_gw-1)):
+                        points_of_prev_match = 0
                         if length > 0:
                             points_of_prev_match = vice_captain_points[owner_name1][length-1]
-                            length+=1
-                        vice_captain_points[owner_name1].append(points_of_prev_match)
-                    prev_gw_of_owner[owner_name1]=current_gw
-
+                            length += 1
+                        vice_captain_points[owner_name1].append(
+                            points_of_prev_match)
+                    prev_gw_of_owner[owner_name1] = current_gw
 
                 points_of_prev_match = 0
                 if length > 0:
                     points_of_prev_match = vice_captain_points[owner_name1][length-1]
-                vice_captain_points[owner_name1].append(points_of_prev_match + value["total_match_points"])
-                print(owner_name1," : ", vice_captain_points[owner_name1])
+                vice_captain_points[owner_name1].append(
+                    points_of_prev_match + value["total_match_points"])
+                print(owner_name1, " : ", vice_captain_points[owner_name1])
                 players.update_one(
                     {"name": owner_name1},
-                    {"$set": {"vc_points_per_match": vice_captain_points[owner_name1]}}
+                    {"$set": {
+                        "vc_points_per_match": vice_captain_points[owner_name1]}}
                 )
 
             total_points += value["total_match_points"]
@@ -270,7 +284,9 @@ def calculate_match_points(dict1):
 
     for k, v in total_match_point_dict.items():
         stats_dict = match_data[k]
-        if(k in CAPTAINS):
+        if(k in CAPTAINS and match_number < 57):
+            stats_dict["total_match_points"] = v * 2
+        elif(k in PLAYOFFS_CAPTAINS and match_number > 56):
             stats_dict["total_match_points"] = v * 2
         else:
             stats_dict["total_match_points"] = v
@@ -334,9 +350,12 @@ for match in match_url_result:
     match_info = match.findChildren()[0].text.replace("Mumbai Indians", "MI").replace("Kolkata Knight Riders", "KKR").replace("Chennai Super Kings", "CSK").replace(
         "Chennai Super Kings", "CSK").replace("Rajasthan Royals", "RR").replace("Delhi Capitals", "DC").replace("Kings XI Punjab", "KXIP").replace("Sunrisers Hyderabad", "SRH").replace("Royal Challengers Bangalore", "RCB")
     regex1 = re.search(', (.+?) Match', match_info)
-    match_number = regex1.group(1)
-    match_number = int(match_number[:len(match_number)-2])
-    if(int(sys.argv[1])>match_number):
+    if(regex1 == None):
+        match_number = 57
+    else:
+        match_number = regex1.group(1)
+        match_number = int(match_number[:len(match_number)-2])
+    if(int(sys.argv[1]) > match_number):
         continue
     current_gw = get_week_from_match(match_number)
     print("==============================================================")
@@ -358,9 +377,11 @@ for match in match_url_result:
             if(playerScore[0].text.strip() == "Did not Bat"):
                 for name in playerScore[1].text.strip().split(","):
                     name = PLAYER_NAME_DICT.get(name, name)
+                    name = name.strip()
                     if name not in PLAYERS:
                         continue
                     data = match_data.get(name, {})
+                    
                     data[TOTAL_PREFIX+"match_played"] = 4
                     match_data[name] = data
             continue
@@ -369,9 +390,19 @@ for match in match_url_result:
             batsman = True
         else:
             batsman = False
-
+        
         if batsman:
+            
             if(playerScore[0].text.strip() == "Did not Bat" or playerScore[0].text.strip() == "Total" or playerScore[0].text.strip() == "Extras"):
+                print("****")
+                for i in playerScore[2:]:
+                    name = i.text.strip()
+                    name = PLAYER_NAME_DICT.get(name, name)
+                    if name not in PLAYERS:
+                        continue
+                    print(name)
+                    data = match_data.get(name, {})
+                    data[TOTAL_PREFIX+"match_played"] = 4
                 continue
             name = playerScore[1].text.replace(
                 "(c)", "").replace("(wk)", "").strip()
@@ -455,7 +486,7 @@ for match in match_url_result:
                     data[TOTAL_PREFIX + ECONOMY_KEY] = -6
                 elif(economy > 10 and economy < 11):
                     data[TOTAL_PREFIX + ECONOMY_KEY] = -4
-                elif(economy >= 9 and economy < 10):
+                elif(economy >= 9 and economy <= 10):
                     data[TOTAL_PREFIX + ECONOMY_KEY] = -2
                 elif(economy >= 5 and economy <= 6):
                     data[TOTAL_PREFIX + ECONOMY_KEY] = 2
@@ -465,7 +496,7 @@ for match in match_url_result:
                     data[TOTAL_PREFIX + ECONOMY_KEY] = 6
 
             match_data[name] = data
-            if(match_number==24):
+            if(match_number == 24):
                 print(data)
 
     calculate_match_points(match_data)

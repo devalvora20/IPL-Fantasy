@@ -14,7 +14,7 @@ export class Controller {
         "Khalil Ahmed", "Suryakumar Yadav", "Prithvi Shaw", "Ambati Rayudu", "de Kock", "Jonny Bairstow", "Pant", "MS Dhoni", "Pat Cummins", "Sandeep Sharma", "Jaydev Unadkat", "Prasidh",
         "Imran Tahir", "Navdeep Saini", "Dale Steyn", "Ishant Sharma"]
 
-    BACKEND_URL = "http://localhost:8081";
+    BACKEND_URL = "https://agile-brushlands-63159.herokuapp.com";
     constructor() {
         fetch(this.BACKEND_URL + "/get-all-stats")
             .then(response => response.json())

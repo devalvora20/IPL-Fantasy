@@ -6,7 +6,7 @@ import './Components.css';
 import PointsTable from './PointsTable';
 import FixtureTable from './FixtureTable';
 const Home = props => {
-
+    const username = props.location.state;
     return (
         <div>
             <div className="divPadding">
@@ -17,7 +17,7 @@ const Home = props => {
                 <div>
                     <Typography>FIXTURES:</Typography>
                 </div>
-                <FixtureTable />
+                <FixtureTable username={username}/>
             </div>
         </div>
     );
