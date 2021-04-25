@@ -12,10 +12,10 @@ function App() {
   return (
     <BrowserRouter style={{padding:30}}>
       <Switch>
-        <Route path="/" exact component={Home} />
+        <Route path="/" exact component={Login} />
         <Route path="/login" exact component={Login} />
         <Route path="/home" exact component={Home} />
-        <Redirect from='*' to='/home' />
+        <Redirect from='*' to='/login' />
       </Switch>
     </BrowserRouter>
   );

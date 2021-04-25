@@ -6,24 +6,18 @@ import {
 import './Components.css';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { useHistory } from "react-router-dom";
-const BACKEND_URL = "https://agile-brushlands-63159.herokuapp.com";
-const ABHISHEK_TEAM = ["Suryakumar Yadav", "Gayle", "Ben Stokes", "Glenn Maxwell", "Jasprit Bumrah", "Umesh Yadav", "Sandeep Sharma"];
-const ARNAV_TEAM = ["Eoin Morgan", "Pant", "Andre Russell", "Vijay Shankar", "Yuzvendra Chahal", "Khalil Ahmed", "Jaydev Unadkat"];
-const DEVAL_TEAM = ["Shreyas Iyer", "Jonny Bairstow", "Hardik Pandya", "Shreyas Gopal", "Sunil Narine", "D Chahar", "Imran Tahir"];
-const DHAWAN_TEAM = ["Dhawan", "Ambati Rayudu", "Bravo", "Jofra Archer", "Kagiso Rabada", "Kuldeep Yadav", "Dale Steyn", "Sam Curran"];
-const CHINTAN_TEAM = ["Steven Smith", "Prithvi Shaw", "Pollard", "Krunal Pandya", "Mujeeb", "Shami", "Pat Cummins"];
-const MOHIL_TEAM = ["de Kock", "Manish Pandey", "Ravindra Jadeja", "Kedar Jadhav", "Bhuvneshwar", "Navdeep Saini", "Ishant Sharma","Boult", "Anrich Nortje"];
-const RISHAB_TEAM = ["David Warner", "Samson", "MS Dhoni", "Shane Watson", "Moeen Ali", "Rahul Chahar", "Prasidh"];
+import {ABHISHEK_TEAM, ARNAV_TEAM, DEVAL_TEAM, DHAWAN_TEAM, MOHIL_TEAM, CHINTAN_TEAM, NACHIKET_TEAM, RISHAB_TEAM, BACKEND_URL} from "../Constants/Constants";
 
-const DEADLINES = {
-    1: new Date("2020-09-19"),
-    2: new Date("2020-09-25"),
-    3: new Date("2020-10-3"),
-    4: new Date("2020-10-10"),
-    5: new Date("2020-10-17"),
-    6: new Date("2020-10-24"),
-    7: new Date("2020-10-31"),
-}
+const DISABLE_GW = 3
+// const DEADLINES = {
+//     1: new Date("2021-04-09"),
+//     2: new Date("2021-04-16"),
+//     3: new Date("2021-04-23"),
+//     4: new Date("2021-04-30"),
+//     5: new Date("2021-05-07"),
+//     6: new Date("2021-05-14"),
+//     7: new Date("2021-05-21"),
+// }
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -43,18 +37,18 @@ const StyledTableRow = withStyles((theme) => ({
     },
 }))(TableRow);
 
-function createData(gw, date, mi, csk, kxip, kkr, dc, rcb, srh, rr) {
-    return { gw, date, mi, csk, kxip, kkr, dc, rcb, srh, rr };
+function createData(gw, date, mi, csk, PK, kkr, dc, rcb, srh, rr) {
+    return { gw, date, mi, csk, PK, kkr, dc, rcb, srh, rr };
 }
 
 const rows = [
-    createData('1', "19 Sept - 25 Sept", "CSK, KKR", "MI, RR, DC", "DC, RCB", "MI", "KXIP, CSK", "SRH, KXIP", "RCB", "CSK"),
-    createData('2', "26 Sept - 2 Oct", "RCB, KXIP", "SRH", "RR, MI", "SRH, RR", "SRH", "MI", "KKR, DC, CSK", "KXIP, KKR"),
-    createData('3', "3 Oct - 9 Oct", "SRH, RR", "KXIP, KKR", "CSK, SRH", "DC, CSK", "KKR, RCB, RR", "RR, DC", "MI, KXIP", "RCB, MI, DC"),
-    createData('4', "10 Oct - 16 Oct", "DC, KKR", "RCB, SRH", "KKR, RCB", "KXIP, RCB, MI", "MI, RR", "CSK, KKR, KXIP", "RR, CSK", "SRH, DC"),
-    createData('5', "17 Oct - 23 Oct", "KXIP, CSK", "DC, RR, MI", "MI, DC", "SRH, RCB", "CSK, KXIP", "RR, KKR", "KKR, RR", "RCB, CSK, SRH"),
-    createData('6', "24 Oct - 30 Oct", "RR, RCB", "RCB, KKR", "SRH, KKR, RR", "DC, KXIP, CSK", "KKR, SRH", "CSK, MI", "KXIP, DC", "MI, KXIP"),
-    createData('7', "31 Oct - 3 nov", "DC, SRH", "KXIP", "CSK", "RR", "MI, RCB", "SRH, DC", "RCB, MI", "KKR"),
+    createData('1', "09 Apr - 15 Apr", "RCB, KKR", "DC", "RR", "SRH, MI", "CSK, RR", "MI, SRH", "KKR, RCB", "PK, DC"),
+    createData('2', "16 Apr - 22 Apr", "SRH, DC", "PK, RR, KKR", "CSK, DC, SRH", "RCB, CSK", "PK, MI", "KKR, RR", "MI, PK", "CSK, RCB"),
+    createData('3', "23 Apr - 29 Apr", "PK, RR", "RCB, SRH", "MI0, KKR", "RR, PK, DC", "SRH, RCB, KKR", "CSK, DC", "DC, CSK", "KKR, MI"),
+    createData('4', "30 Apr - 06 May", "CSK, SRH", "MI, RR", "RCB, DC, RCB", "RCB", "PK", "PK, KKR, PK", "RR, MI", "SRH, CSK"),
+    createData('5', "07 May - 13 May", "RR, KKR, PK", "SRH, PK, KKR", "CSK, MI", "DC, MI, CSK", "KKR, RR", "SRH", "CSK, RCB, RR", "MI, DC, SRH"),
+    createData('6', "14 May - 20 May", "CSK, RCB", "MI", "KKR, SRH", "PK, RR", "RCB, SRH", "CD, RR, MI", "DC, PK", "RCB, KKR"),
+    createData('7', "21 May - 27 May", "DC", "DC, RCB", "RR", "SRH", "CSK, MI", "CSK", "KKR", "PK"),
 ];
 
 const useStyles = makeStyles({
@@ -86,7 +80,7 @@ const FixtureTable = props => {
 
     const [myPlayers, setMyPlayers] = React.useState([]);
 
-    React.useEffect(() => {
+    const getAllVCS = () =>{
         fetch(BACKEND_URL + "/get-all-vice-captains")
             .then(response => response.json())
             .then((data) => {
@@ -100,6 +94,9 @@ const FixtureTable = props => {
                 }
             });
 
+    }
+    React.useEffect(() => {
+        getAllVCS();        
         if (username === "abhishek") {
             setMyPlayers(ABHISHEK_TEAM);
         }
@@ -120,6 +117,9 @@ const FixtureTable = props => {
         }
         else if (username === "mohil") {
             setMyPlayers(MOHIL_TEAM);
+        }
+        else if (username === "nachiket") {
+            setMyPlayers(NACHIKET_TEAM);
         }
     }, [username]);
 
@@ -163,6 +163,7 @@ const FixtureTable = props => {
             },
             body: formBody
         })
+        getAllVCS();
         setOpen(false);
     };
 
@@ -202,7 +203,7 @@ const FixtureTable = props => {
                             <StyledTableCell align="center">Date</StyledTableCell>
                             <StyledTableCell align="center">MI</StyledTableCell>
                             <StyledTableCell align="center">CSK</StyledTableCell>
-                            <StyledTableCell align="center">KXIP</StyledTableCell>
+                            <StyledTableCell align="center">PK</StyledTableCell>
                             <StyledTableCell align="center">KKR</StyledTableCell>
                             <StyledTableCell align="center">DC</StyledTableCell>
                             <StyledTableCell align="center">RCB</StyledTableCell>
@@ -219,7 +220,7 @@ const FixtureTable = props => {
                                 <StyledTableCell component="th" align="center" scope="row"> {row.date} </StyledTableCell>
                                 <StyledTableCell align="center" style={{ width: 48 }}><span>{row.mi}</span></StyledTableCell>
                                 <StyledTableCell align="center" style={{ width: 48 }}><span>{row.csk}</span></StyledTableCell>
-                                <StyledTableCell align="center" style={{ width: 48 }}><span>{row.kxip}</span></StyledTableCell>
+                                <StyledTableCell align="center" style={{ width: 48 }}><span>{row.PK}</span></StyledTableCell>
                                 <StyledTableCell align="center" style={{ width: 48 }}><span>{row.kkr}</span></StyledTableCell>
                                 <StyledTableCell align="center" style={{ width: 48 }}><span>{row.dc}</span></StyledTableCell>
                                 <StyledTableCell align="center" style={{ width: 48 }}><span>{row.rcb}</span></StyledTableCell>
@@ -228,7 +229,7 @@ const FixtureTable = props => {
                                 <StyledTableCell align="center" style={{ minWidth: 200 }}>
                                     <FormControl variant="outlined" className={classes.formControl}>
                                         <InputLabel >Select a vice captain</InputLabel>
-                                        <Select disabled={row.gw<=5} value={getGW("value", row.gw)} name={row.gw} onChange={handleVCChange} label="Select a vice captain" >
+                                        <Select disabled={row.gw<=DISABLE_GW} value={getGW("value", row.gw)} name={row.gw} onChange={handleVCChange} label="Select a vice captain" >
                                             <MenuItem value="">
                                                 <em>None</em>
                                             </MenuItem>
@@ -239,7 +240,8 @@ const FixtureTable = props => {
                                     </FormControl>
                                 </StyledTableCell>
                                 <StyledTableCell align="center">
-                                    <Button disabled={getGW("value", row.gw) === '' || new Date() > DEADLINES[row.gw]} variant="outlined" color="primary" onClick={() => { handleClickOpen(row.gw) }}>
+                                    {/* <Button disabled={getGW("value", row.gw) === '' || new Date() > DEADLINES[row.gw]} variant="outlined" color="primary" onClick={() => { handleClickOpen(row.gw) }}> */}
+                                    <Button disabled={row.gw<=DISABLE_GW} variant="outlined" color="primary" onClick={() => { handleClickOpen(row.gw) }}>
                                         SAVE
                                     </Button>
                                     <Dialog open={open} onClose={handleClose} >

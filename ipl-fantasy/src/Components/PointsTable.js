@@ -10,7 +10,8 @@ import Highcharts from "highcharts/highstock";
 import drilldow from "highcharts/modules/drilldown";
 import PieChart from "highcharts-react-official";
 import LineChart from "highcharts-react-official";
-
+import {ABHISHEK_TEAM, ARNAV_TEAM, DEVAL_TEAM, DHAWAN_TEAM, MOHIL_TEAM, CHINTAN_TEAM, NACHIKET_TEAM, RISHAB_TEAM, BACKEND_URL, OWNERS, PLAYERS_TO_TEAM_DICT} from "../Constants/Constants";
+import Disclaimer from './Disclaimer';
 const GWS = [1, 2, 3, 4, 5, 6, 7];
 
 drilldow(Highcharts);
@@ -21,7 +22,7 @@ const mi_icon = require('../Assets/mi_icon.jpg');
 const rr_icon = require('../Assets/rr_icon.png');
 const rcb_icon = require('../Assets/rcb_icon.png');
 const srh_icon = require('../Assets/srh_icon.png');
-const kxip_icon = require('../Assets/kxip_icon.png');
+const pk_icon = require('../Assets/pk_icon.png');
 const useStyles = makeStyles({
     table: {
         minWidth: 650,
@@ -30,32 +31,6 @@ const useStyles = makeStyles({
         minWidth: 108
     }
 });
-
-const PLAYERS_TO_TEAM_DICT = {
-    "Kohli": "rcb", "Rohit": "mi", "David Warner": "srh", "de Villiers": "rcb", "Buttler": "rr",
-    "Steven Smith": "rr", "Lokesh Rahul": "kxip", "Andre Russell": "kkr", "Hardik Pandya": "mi", "Shane Watson": "csk",
-    "Ravindra Jadeja": "csk", "Glenn Maxwell": "kxip", "Krunal Pandya": "mi", "Bravo": "csk", "Rashid Khan": "srh", "Jasprit Bumrah": "mi",
-    "Sunil Narine": "kkr", "Yuzvendra Chahal": "rcb", "Mujeeb": "kxip", "Kagiso Rabada": "dc",
-    "Bhuvneshwar": "srh", "Finch": "rcb", "Dhawan": "dc", "Shreyas Iyer": "dc", "Eoin Morgan": "kkr", "Manish Pandey": "srh",
-    "Samson": "rr", "Gayle": "kxip", "Vijay Shankar": "srh", "Pollard": "mi",
-    "Ben Stokes": "rr", "Shreyas Gopal": "rr", "Kedar Jadhav": "csk", "Jofra Archer": "rr",
-    "Moeen Ali": "rcb", "Kuldeep Yadav": "kkr", "D Chahar": "csk", "Umesh Yadav": "rcb",
-    "Shami": "kxip", "Rahul Chahar": "mi", "Khaleel Ahmed": "srh", "Suryakumar Yadav": "mi",
-    "Prithvi Shaw": "dc", "Ambati Rayudu": "csk", "de Kock": "mi", "Jonny Bairstow": "srh", "Pant": "dc",
-    "MS Dhoni": "csk", "Pat Cummins": "kkr", "Sandeep Sharma": "srh", "Jaydev Unadkat": "rr", "Prasidh": "kkr",
-    "Imran Tahir": "csk", "Navdeep Saini": "rcb", "Dale Steyn": "rcb", "Ishant Sharma": "dc", "Boult": "mi","Anrich Nortje":"dc", "Sam Curran":"csk"
-}
-
-const BACKEND_URL = "https://agile-brushlands-63159.herokuapp.com";
-
-const ABHISHEK_TEAM = ["de Villiers", "Suryakumar Yadav", "Gayle", "Ben Stokes", "Glenn Maxwell", "Jasprit Bumrah", "Umesh Yadav", "Sandeep Sharma"];
-const ARNAV_TEAM = ["Buttler", "Eoin Morgan", "Pant", "Andre Russell", "Vijay Shankar", "Yuzvendra Chahal", "Khaleel Ahmed", "Jaydev Unadkat"];
-const DEVAL_TEAM = ["Lokesh Rahul", "Shreyas Iyer", "Jonny Bairstow", "Hardik Pandya", "Shreyas Gopal", "Sunil Narine", "D Chahar", "Imran Tahir"];
-const DHAWAN_TEAM = ["Rohit", "Dhawan", "Ambati Rayudu", "Bravo", "Jofra Archer", "Kagiso Rabada", "Kuldeep Yadav", "Dale Steyn", "Sam Curran"];
-const CHINTAN_TEAM = ["Steven Smith", "Finch", "Prithvi Shaw", "Pollard", "Krunal Pandya", "Mujeeb", "Shami", "Pat Cummins"];
-const MOHIL_TEAM = ["Kohli", "de Kock", "Manish Pandey", "Ravindra Jadeja", "Kedar Jadhav", "Bhuvneshwar", "Navdeep Saini", "Ishant Sharma", "Boult","Anrich Nortje"];
-const RISHAB_TEAM = ["David Warner", "Samson", "MS Dhoni", "Shane Watson", "Moeen Ali", "Rashid Khan", "Rahul Chahar", "Prasidh"];
-const OWNERS = { "Abhishek": ABHISHEK_TEAM, "Arnav": ARNAV_TEAM, "Deval": DEVAL_TEAM, "Dhawan": DHAWAN_TEAM, "Chintan": CHINTAN_TEAM, "Mohil": MOHIL_TEAM, "Rishab": RISHAB_TEAM };
 let chartOptionsTemplate = {
     chart: {
         type: 'pie'
@@ -101,19 +76,29 @@ let chartOptionsTemplate = {
 }
 
 
+// const DEADLINES = {
+//     1: new Date("2020-04-09"),
+//     2: new Date("2020-04-16"),
+//     3: new Date("2020-04-23"),
+//     4: new Date("2020-04-30"),
+//     5: new Date("2020-05-07"),
+//     6: new Date("2020-05-14"),
+//     7: new Date("2020-05-21"),
+// }
+
 const getCurrentGW = () => {
     // console.log((new Date() <= new Date("2020-09-25")));
-    if (new Date("2020-09-19") <= new Date() && new Date() <= new Date("2020-09-25"))
+    if (new Date("2021-04-09") <= new Date() && new Date() <= new Date("2021-04-15"))
         return 1
-    else if (new Date("2020-09-26") <= new Date() && new Date() <= new Date("2020-10-02"))
+    else if (new Date("2021-04-16") <= new Date() && new Date() <= new Date("2021-04-22"))
         return 2
-    else if (new Date("2020-10-03") <= new Date() && new Date() <= new Date("2020-10-09"))
+    else if (new Date("2021-04-23") <= new Date() && new Date() <= new Date("2021-04-29"))
         return 3
-    else if (new Date("2020-10-10") <= new Date() && new Date() <= new Date("2020-10-16"))
+    else if (new Date("2021-04-30") <= new Date() && new Date() <= new Date("2021-05-06"))
         return 4
-    else if (new Date("2020-09-17") <= new Date() && new Date() <= new Date("2020-10-23"))
+    else if (new Date("2021-05-07") <= new Date() && new Date() <= new Date("2021-05-13"))
         return 5
-    else if (new Date("2020-09-24") <= new Date() && new Date() <= new Date("2020-10-30"))
+    else if (new Date("2021-05-14") <= new Date() && new Date() <= new Date("2021-05-20"))
         return 6
     else
         return 7
@@ -131,6 +116,7 @@ const getIndividualData = (name, team, playerStats) => {
     let bowlingData1 = []
     let fieldingData1 = []
     for (let player of team) {
+        console.log(player)
         totalPoints += playerStats[player].totalPoints;
         totalBattingPoints += playerStats[player].totalBattingPoints;
         totalBowlingPoints += playerStats[player].totalBowlingPoints;
@@ -246,6 +232,11 @@ const PointsTable = () => {
                 players.push(<Chip className={currentWeekVC.indexOf(player1) > -1 ? "viceCaptainChip" : ""} key={player1} style={{ marginRight: 8 }} variant="outlined" label={player1} avatar={<Avatar alt="Natacha" src={getImage("icon", player1)} />} />)
             }
         }
+        else if (name === "Nachiket") {
+            for (let player1 of NACHIKET_TEAM) {
+                players.push(<Chip className={currentWeekVC.indexOf(player1) > -1 ? "viceCaptainChip" : ""} key={player1} style={{ marginRight: 8 }} variant="outlined" label={player1} avatar={<Avatar alt="Natacha" src={getImage("icon", player1)} />} />)
+            }
+        }
         return players;
     }
 
@@ -344,8 +335,8 @@ const PointsTable = () => {
         else if (PLAYERS_TO_TEAM_DICT[player] === "rcb") {
             team = type === "image" ? "linear-gradient(135deg,#EC1C24, #2B2A29, #D1AB3E)" : rcb_icon;
         }
-        else if (PLAYERS_TO_TEAM_DICT[player] === "kxip") {
-            team = type === "image" ? "linear-gradient(135deg, #ED1B24, #DCDDDF)" : kxip_icon;
+        else if (PLAYERS_TO_TEAM_DICT[player] === "pk") {
+            team = type === "image" ? "linear-gradient(135deg, #ED1B24, #DCDDDF)" : pk_icon;
         }
         else if (PLAYERS_TO_TEAM_DICT[player] === "srh") {
             team = type === "image" ? "linear-gradient(135deg, #FF822A, #000000)" : srh_icon;
@@ -454,6 +445,9 @@ const PointsTable = () => {
                 </Grid>
 
             </Grid>
+            <div>
+                <Disclaimer disclaimer="Charts data are WITHOUT any Captain(2x)/Vice Captain(1.5x) points. They are regular player points"/>
+            </div>
             <Paper style={{ margin: "15px 0px" }}>
 
                 <Grid container>
@@ -469,6 +463,15 @@ const PointsTable = () => {
                 </Grid>
             </Paper>
             <Paper style={{ margin: "15px 0px", padding: "10px" }}>
+            
+                <Grid container style={{minHeight:500}}>
+
+                    <Grid item xs={12}>
+                        <LineChart highcharts={Highcharts} options={lineChartOptionsTemplate} />
+                    </Grid>
+
+                </Grid>
+                <Divider orientation="horizontal" style={{ height: 3, color: "black", marginTop: 25, marginBottom: 10 }} />
                 <Typography>
                     VICE CAPTAINS:
                 </Typography>
@@ -509,14 +512,6 @@ const PointsTable = () => {
                     </div>
 
                 }
-                <Divider orientation="horizontal" style={{ height: 3, color: "black", marginTop: 25, marginBottom: 10 }} />
-                <Grid container style={{minHeight:500}}>
-
-                    <Grid item xs={12}>
-                        <LineChart highcharts={Highcharts} options={lineChartOptionsTemplate} />
-                    </Grid>
-
-                </Grid>
             </Paper>
 
         </div>

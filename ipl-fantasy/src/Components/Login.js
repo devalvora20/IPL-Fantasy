@@ -11,6 +11,7 @@ const auth = {
     "deval": "admin",
     "rishab": "prismacademy1989",
     "mohil": "rohitrocks",
+    "nachiket": "whistlepodu",
 }
 
 const iplLogo = require('../Assets/IPL.jpeg');
@@ -19,6 +20,10 @@ const Login = props => {
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [authError, setAuthError] = React.useState(false);
+
+    React.useEffect(() => {
+        // props.history.push('/home', "deval");
+    });
 
     const login = () => {
         
@@ -56,7 +61,7 @@ const Login = props => {
                         </Button>
                     </Grid>
                     {authError && <Grid item xs={12}>
-                        <Typography style={{color:"#FF0000"}}>Invalid Id/Password. Try again</Typography>
+                        <Typography style={{ color: "#FF0000" }}>Invalid Id/Password. Try again</Typography>
                     </Grid>}
                 </Grid>
             </Paper>
